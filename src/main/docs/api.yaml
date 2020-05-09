@@ -1,0 +1,70 @@
+# OpenAPI 3 has quite a difference with OpenAPI 2, the way the linter works in the editor will be based on this.
+openapi: 3.0.0
+
+# This section will contain metadata information about the API. It will be shown on the editor/UI when we publish this
+info:
+  title: To-Do Board API
+  version: 1.0.0
+  description: API specification to support daily to-do list operations
+
+# The list of the servers that we can use to use the API. This will be rendered as a combo box in the editor/UI when we publish it, so the user could pick and use the endpoint they prefer.
+servers:
+  - url: http://dev-api.todoboard.com/v1
+    description: DEV-ENV
+  - url: http://api.todoboard.com/v1
+    description: PROD-ENV
+
+paths:
+  /projects:
+    get:
+      operationId: searchProjects
+      tags:
+        - Projects
+      description: retrieve all available projects in paginated way
+      responses:
+        200:
+          description: successfully retrieved all projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+
+  /projects/{projectId}:
+    get:
+      operationId: getProjects
+      tags:
+        - Projects
+      description: retrieve a project by id
+      parameters:
+        - name: projectId
+          in: path
+          schema:
+            type: integer
+            minimum: 1
+          required: true
+          allowEmptyValue: false
+          example: 1
+
+      responses:
+        200:
+          description: the specific project successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: unique id of the project for the identifier
+          example: 1
+        name:
+          type: string
+          description: the name of the project
+          example: To-do Application Development
