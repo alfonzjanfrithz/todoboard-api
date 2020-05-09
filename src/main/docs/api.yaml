@@ -36,6 +36,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProjectResponse'
+    post:
+      operationId: createProject
+      tags:
+        - Projects
+      description: create new project entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        201:
+          description: successfully created a project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+
 
   /projects/{projectId}:
     get:
@@ -64,6 +83,13 @@ paths:
 
 components:
   schemas:
+    ProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the name of the project
+          example: To-do Application Development
     ProjectResponse:
       type: object
       properties:
