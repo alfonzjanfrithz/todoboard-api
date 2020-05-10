@@ -17,6 +17,12 @@ servers:
 paths:
   /projects:
     get:
+      parameters:
+        - in: query
+          description: find project by name
+          name: name
+          schema:
+            type: string
       operationId: searchProjects
       tags:
         - Projects
@@ -29,7 +35,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: '#/components/schemas/ProjectResponse'
 
   /projects/{projectId}:
     get:
@@ -42,6 +48,7 @@ paths:
           in: path
           schema:
             type: integer
+            format: int64
             minimum: 1
           required: true
           allowEmptyValue: false
@@ -53,15 +60,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
+                $ref: '#/components/schemas/ProjectResponse'
 
 components:
   schemas:
-    Project:
+    ProjectResponse:
       type: object
       properties:
         id:
           type: integer
+          format: int64
           description: unique id of the project for the identifier
           example: 1
         name:
